@@ -4,6 +4,7 @@
   <title>Mocha Spec Runner</title>
   <link rel="stylesheet" href="lib/mocha/mocha.css">
   <script src="lib/jquery.js"></script>
+  <script src="client/bower_components/underscore/underscore-min.js"></script>
   <script src="lib/mocha/mocha.js"></script>
   <script src="lib/chai/chai.js"></script>
   <script src="lib/sinon/sinon.js"></script>
@@ -40,7 +41,16 @@
     </form>
     <div id="chats"></div>
   </div>
-
+ <script id="messageTemplate" type="text/template">
+     <div class="message">
+       <span class="username">
+         <%=username%>
+       </span>
+       <span class="text">
+         <%=text%>
+       </span>
+     </div>
+    </script>
 </div>
 </body>
 </html>

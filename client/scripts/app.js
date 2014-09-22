@@ -2,20 +2,24 @@
 
 var app = {
   server: 'https://api.parse.com/1/classes/chatterbox'
-
 };
 
-app.init = function(){
-  $('.username').on('click', function(){ app.addFriend(); })
-  app.fetch(function (data) {
-      console.log(data);
-      console.log('chatterbox: Message sent');
-      var template = _.template($('#messageTemplate').html());
-      _.each(data.results, function(item, index){
-        $('.chat').append(template(app.preprocess(item)));
-      });
-    });
 
+app.init = function(){
+  app.username = getParameterByName('username');
+  console.log(app.username);
+  app.messageTemplate = _.template($('#messageTemplate').html());
+  $('.username').on('click', function(){ app.addFriend(); })
+  app.fetch();
+  setInterval(app.fetch, 1000);
+
+  $('#messageForm').on('submit', function(e){
+    e.preventDefault();
+    var text = $('#inputText').val();
+
+    var sendObj = {username:app.username, text:text, roomname:"lobby"};
+    app.send(sendObj);
+  })
 };
 
 app.preprocess = function(obj){
@@ -32,9 +36,10 @@ app.preprocess = function(obj){
 
 app.send = function(message, onSuccess, onError){
   onError = onError || app.errorCallback;
+  console.log("Message is sending" + message);
   $.ajax({
     // always use this url
-    url: app.url,
+    url: app.server,
     type: 'POST',
     data: JSON.stringify(message),
     contentType: 'application/json',
@@ -45,6 +50,8 @@ app.send = function(message, onSuccess, onError){
 
 app.fetch = function(onSuccess, onError){
   onError = onError || app.errorCallback;
+  onSuccess = onSuccess || app.successCallback;
+
   $.ajax({
     // always use this url
     url: app.server,
@@ -55,6 +62,14 @@ app.fetch = function(onSuccess, onError){
   });
 };
 
+app.successCallback = function (data) {
+  app.clearMessages();
+
+  _.each(data.results, function(item, index){
+    app.addMessage(item);
+  });
+}
+
 app.errorCallback = function(data){
   console.log("there is a callback error");
 }
@@ -64,8 +79,10 @@ app.clearMessages = function(element){
 };
 
 app.addMessage = function(message){
-  var el = $('<div>');
-  $('#chats').append(el);
+  //var el = $('<div>');
+  //$('#chats').append(el);
+  var preprocess = app.preprocess(message);
+  $('#chats').append(app.messageTemplate(preprocess));
 };
 
 app.addRoom = function(roomName){
@@ -78,3 +95,10 @@ app.addFriend = function(){
 }
 
 $(document).ready(app.init);
+
+function getParameterByName(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results == null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
