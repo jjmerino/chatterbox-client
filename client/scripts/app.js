@@ -1,7 +1,7 @@
 // YOUR CODE HERE:
 
 var app = {
-  server: 'https://api.parse.com/1/classes/chatterbox'
+  server: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt'
 };
 
 
@@ -17,7 +17,7 @@ app.init = function(){
     e.preventDefault();
     var text = $('#inputText').val();
 
-    var sendObj = {username:app.username, text:text, roomname:"lobby"};
+    var sendObj = {username:app.username, text:text, room:"lobby"};
     app.send(sendObj);
   })
 };
@@ -82,7 +82,7 @@ app.addMessage = function(message){
   //var el = $('<div>');
   //$('#chats').append(el);
   var preprocess = app.preprocess(message);
-  $('#chats').append(app.messageTemplate(preprocess));
+  $('#chats').prepend(app.messageTemplate(preprocess));
 };
 
 app.addRoom = function(roomName){
