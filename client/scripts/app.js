@@ -12,7 +12,7 @@ app.init = function(){
       console.log('chatterbox: Message sent');
       var template = _.template($('#messageTemplate').html());
       _.each(data.results, function(item, index){
-        $('body').append(template(app.preprocess(item)));
+        $('.chat').append(template(app.preprocess(item)));
       });
     });
 

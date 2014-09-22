@@ -15,11 +15,17 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+      <div id="chats" class="chat"></div>
       <!-- Your HTML goes here! -->
     </div>
     <script id="messageTemplate" type="text/template">
-     <div>
-     <%=username%>
+     <div class="message">
+       <span class="username">
+         <%=username%>
+       </span>
+       <span class="text">
+         <%=text%>
+       </span>
      </div>
     </script>
   </body>
