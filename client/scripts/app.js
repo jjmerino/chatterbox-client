@@ -28,6 +28,15 @@ app.init = function(){
     var sendObj = {username:app.username, text:text, roomname:app.currentRoom};
     app.send(sendObj);
   });
+  $('#createRoomButton').on('click',function(){
+    console.log('after 31, or connection is broken');
+    var $el = $('#newRoomInput');
+
+    var roomName = $el.val();
+    app.chatRooms[roomName] = true;
+    app.currentRoom = roomName;
+    $el.val('');
+  });
 };
 
 app.render = function(){
