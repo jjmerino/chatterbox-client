@@ -2,7 +2,9 @@
 
 var app = {
   server: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt',
-  chatRooms: {}
+  chatRooms: {},
+  currentRoom: "lobby",
+  chatMessages: []
 };
 
 
@@ -11,27 +13,48 @@ app.init = function(){
   //load templates
   app.roomTemplate = _.template($('#roomItem').html());
   app.messageTemplate = _.template($('#messageTemplate').html());
-  //Handle events
+  app.update()
+  setInterval(app.update, 1000);
+
   $('.username').on('click', function(){ app.addFriend(); })
   $('#messageForm').on('submit', function(e){
     e.preventDefault();
     var text = $('#inputText').val();
-    var sendObj = {username:app.username, text:text, room:"lobby"};
+    var sendObj = {username:app.username, text:text, room:app.currentRoom};
     app.send(sendObj);
   })
-  //fetch and draw messages & rooms
-  app.fetch();
-  app.render();
-  setInterval(app.fetch, 1000);
-
 };
 
 app.render = function(){
   $("#roomContainer").html('');
+  $('#chats').html('');
+  for(var i = 0; i < app.chatMessages.length; i++){
+
+    if(app.currentRoom === app.chatMessages[i].roomname){
+      $('#chats').prepend(app.messageTemplate(app.chatMessages[i]));
+    }
+  }
   for(var key in app.chatRooms){
     if(app.chatRooms.hasOwnProperty(key)){
       //create a room
-      $("#roomContainer").append(app.roomTemplate({name:key}));
+      var className;
+      if(app.currentRoom === key){
+        className = "active";
+      } else {
+        className = "";
+      }
+      var el = app.roomTemplate({name:key,className:className});
+      var $el = $(el);
+      $("#roomContainer").append($el);
+      //Handle events
+      $el.find('a').on('click', function(e){
+        console.log("Did you click me!");
+        console.log( $(this).attr('data-roomname'));
+        app.currentRoom = $(this).attr('data-roomname');
+        app.render();
+      });
+
+
     }
   }
 };
@@ -78,15 +101,15 @@ app.fetch = function(onSuccess, onError){
 
 app.successCallback = function (data) {
   app.clearMessages();
-
+  // create a set
   _.each(data.results, function(item, index){
     if(item.roomname !== undefined){
       //create chat room
-      app.chatRooms[item.roomname] = true;
+      app.chatRooms[_.escape(item.roomname)] = true;
+      //add to set
     }
     app.addMessage(item);
   });
-
   app.render();
 }
 
@@ -95,14 +118,15 @@ app.errorCallback = function(data){
 }
 
 app.clearMessages = function(element){
-  $('#chats').html('');
+  app.chatMessages = [];
 };
 
 app.addMessage = function(message){
   //var el = $('<div>');
   //$('#chats').append(el);
   var preprocess = app.preprocess(message);
-  $('#chats').prepend(app.messageTemplate(preprocess));
+  app.chatMessages.push(preprocess);
+
 };
 
 app.addRoom = function(roomName){
@@ -111,6 +135,13 @@ app.addRoom = function(roomName){
 }
 
 app.addFriend = function(){
+
+}
+
+app.update = function(){
+
+  //fetch and draw messages & rooms
+  app.fetch();
 
 }
 

@@ -75,6 +75,11 @@ form input[type=text] {
 
 }
 
+.active{
+    background-color: #444;
+
+}
+
 .chat:hover {
     background-color: #ddd;
 }
