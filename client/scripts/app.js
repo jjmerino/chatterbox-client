@@ -1,25 +1,39 @@
 // YOUR CODE HERE:
 
 var app = {
-  server: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt'
+  server: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt',
+  chatRooms: {}
 };
 
 
 app.init = function(){
   app.username = getParameterByName('username');
-  console.log(app.username);
+  //load templates
+  app.roomTemplate = _.template($('#roomItem').html());
   app.messageTemplate = _.template($('#messageTemplate').html());
+  //Handle events
   $('.username').on('click', function(){ app.addFriend(); })
-  app.fetch();
-  setInterval(app.fetch, 1000);
-
   $('#messageForm').on('submit', function(e){
     e.preventDefault();
     var text = $('#inputText').val();
-
     var sendObj = {username:app.username, text:text, room:"lobby"};
     app.send(sendObj);
   })
+  //fetch and draw messages & rooms
+  app.fetch();
+  app.render();
+  setInterval(app.fetch, 1000);
+
+};
+
+app.render = function(){
+  $("#roomContainer").html('');
+  for(var key in app.chatRooms){
+    if(app.chatRooms.hasOwnProperty(key)){
+      //create a room
+      $("#roomContainer").append(app.roomTemplate({name:key}));
+    }
+  }
 };
 
 app.preprocess = function(obj){
@@ -66,8 +80,14 @@ app.successCallback = function (data) {
   app.clearMessages();
 
   _.each(data.results, function(item, index){
+    if(item.roomname !== undefined){
+      //create chat room
+      app.chatRooms[item.roomname] = true;
+    }
     app.addMessage(item);
   });
+
+  app.render();
 }
 
 app.errorCallback = function(data){

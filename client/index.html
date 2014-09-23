@@ -15,6 +15,11 @@
   <body>
     <div id="main">
       <h1>chatterbox</h1>
+      <div id="chatRooms" class="sideBar">
+        <ul id="roomContainer">
+
+        </ul>
+      </div>
       <div id="chats" class="chat"></div>
       <!-- Your HTML goes here! -->
       <form id="messageForm">
@@ -32,5 +37,13 @@
        </span>
      </div>
     </script>
+     <script id="roomItem" type="text/template">
+     <li class="message">
+       <a href="#" class="roomName">
+         <%=name%>
+       </a>
+     </li>
+    </script>
+
   </body>
 </html>
