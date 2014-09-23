@@ -1,49 +1,94 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>chatterbox</title>
-    <link rel="stylesheet" href="styles/styles.css">
+<head>
+  <meta charset="utf-8">
+  <title>chatterbox</title>
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.min.css"/>
+  <link rel="stylesheet" href="styles/sb.css"/>
 
-    <!-- dependencies -->
-    <script src="bower_components/jquery/jquery.min.js"></script>
-    <script src="bower_components/underscore/underscore-min.js"></script>
-    <!-- your scripts -->
-    <script src="scripts/config.js"></script>
-    <script src="scripts/app.js"></script>
-  </head>
-  <body>
-    <div id="main">
-      <h1>chatterbox</h1>
-      <div id="chatRooms" class="sideBar">
-        <ul id="roomContainer">
+  <!-- dependencies -->
+  <script src="bower_components/jquery/jquery.min.js"></script>
+  <script src="bower_components/underscore/underscore-min.js"></script>
+  <script src="bower_components/momentjs/min/moment.min.js"></script>
+  <!-- your scripts -->
+  <script src="scripts/config.js"></script>
+  <script src="scripts/app.js"></script>
+</head>
+<body>
+<div class="navbar-default sidebar" role="navigation">
+  <div class="sidebar-nav navbar-collapse">
+    <ul class="nav">
+      <li class="sidebar-search">
+        <div class="input-group custom-search-form">
+          <input type="text" class="form-control" placeholder="Search...">
+          <span class="input-group-btn">
+              <button class="btn btn-default" type="button">
+                <i class="fa fa-search"></i>
+              </button>
+          </span>
+        </div>
+      </li>
+    </ul>
+    <ul class="nav" id="roomContainer">
+    </ul>
+  </div>
+</div>
+<div id="page-wrapper">
+<div class="row">
+  <div class="chat-panel panel panel-default">
+    <div class="panel-heading">
+      <i class="logoicon fa fa-comments fa-fw pull-left fa-5x"></i>
+      <h1 class="">chatterbox</h1>
+    </div>
+    <!-- /.panel-heading -->
+    <div class="panel-body">
+      <ul id='chats' class="chat">
 
-        </ul>
-      </div>
-      <div id="chats" class="chat"></div>
-      <!-- Your HTML goes here! -->
+      </ul>
+    </div>
+    <!-- /.panel-body -->
+    <div class="panel-footer">
       <form id="messageForm">
-        <input type="text" id="inputText" placeholder="Insert message here">
-        <input type="submit" value="Send">
+      <div class="input-group">
+        <input id="inputText" type="text" class="form-control input-sm" placeholder="Type your message here..."/>
+          <span class="input-group-btn">
+              <input type="submit" value="Send" class="btn btn-warning btn-sm" id="btn-chat">
+
+              </input>
+          </span>
+      </div>
+
       </form>
     </div>
-    <script id="messageTemplate" type="text/template">
-     <div class="message">
-       <span class="username">
-         <%=username%>
-       </span>
-       <span class="text">
-         <%=text%>
-       </span>
-     </div>
-    </script>
-     <script id="roomItem" type="text/template">
-     <li class="message">
-       <a href="#" class="roomName <%=className%>" data-roomname="<%=name%>">
-         <%=name%>
-       </a>
-     </li>
-    </script>
+    <!-- /.panel-footer -->
+  </div>
 
-  </body>
+</div>
+
+</div>
+<script id="messageTemplate" type="text/template">
+  <li class="left clearfix">
+    <div class="chat-body clearfix">
+      <div class="header">
+        <strong class="primary-font"><%=username%></strong>
+        <small class="pull-right text-muted">
+          <i class="fa fa-clock-o fa-fw"></i><%=ago%>
+        </small>
+      </div>
+      <p>
+        <%=text%>
+      </p>
+    </div>
+  </li>
+</script>
+<script id="roomItem" type="text/template">
+  <li class="message">
+    <a href="#" class="roomName <%=className%>" data-roomname="<%=name%>">
+      <%=name%>
+    </a>
+  </li>
+</script>
+
+</body>
 </html>

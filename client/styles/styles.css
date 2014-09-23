@@ -6,7 +6,7 @@ body {
 }
 
 #main {
-    width: 500px;
+    width: 1000px;
     margin: auto;
     text-align: left;
     background: white;
@@ -21,7 +21,6 @@ body {
     margin-bottom: 5px;
     padding: 5px;
 }
-
 #main h1 span {
     font-style:italic;
 }
@@ -59,31 +58,6 @@ form input[type=text] {
     padding: 5px;
 }
 
-.chat {
-    padding: 5px;
-    margin-bottom: 5px;
-    background-color: #eee;
-    height: 900px;
-    overflow-y: scroll;
-}
-
-.chat .username {
-    font-weight: 800;
-}
-
-.chat .text{
-
-}
-
-.active{
-    background-color: #444;
-
-}
-
-.chat:hover {
-    background-color: #ddd;
-}
-
 .spinner {
     float: right;
     height: 46px;
@@ -92,4 +66,10 @@ form input[type=text] {
 
 .spinner img {
     padding: 10px;
+}
+
+.wrapper {
+    padding: 0 15px;
+    min-height: 568px;
+    background-color: #fff;
 }

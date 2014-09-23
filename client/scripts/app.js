@@ -27,7 +27,7 @@ app.init = function(){
 
     var sendObj = {username:app.username, text:text, roomname:app.currentRoom};
     app.send(sendObj);
-  })
+  });
 };
 
 app.render = function(){
@@ -36,6 +36,15 @@ app.render = function(){
   for(var i = 0; i < app.chatMessages.length; i++){
 
     if(app.currentRoom === app.chatMessages[i].roomname){
+
+        directionClass = 'right';
+        directionClassB = 'left';
+
+      app.chatMessages[i].ago = moment(app.chatMessages[i].createdAt).fromNow();
+
+
+      app.chatMessages[i].directionClass = directionClass;
+      app.chatMessages[i].directionClassB = directionClassB;
       $('#chats').prepend(app.messageTemplate(app.chatMessages[i]));
     }
   }
@@ -62,6 +71,9 @@ app.render = function(){
 
     }
   }
+//
+//  var objDiv = document.getElementById("chats");
+//  objDiv.scrollTop = objDiv.scrollHeight;
 };
 
 app.preprocess = function(obj){
