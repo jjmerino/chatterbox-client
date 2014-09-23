@@ -3,6 +3,7 @@
 var app = {
   server: 'https://api.parse.com/1/classes/chatterbox/?order=-createdAt',
   chatRooms: {},
+  myFriends: {},
   currentRoom: "lobby",
   chatMessages: []
 };
@@ -48,13 +49,25 @@ app.render = function(){
 
         directionClass = 'right';
         directionClassB = 'left';
+      var user =  app.chatMessages[i];
+      user.ago = moment(user.createdAt).fromNow();
 
-      app.chatMessages[i].ago = moment(app.chatMessages[i].createdAt).fromNow();
 
+      user.directionClass = directionClass;
+      user.directionClassB = directionClassB;
+      user.isFriend = false;
+      if(app.myFriends[user.username]===true){
+        user.isFriend = true;
+      }
+      var el = app.messageTemplate(user);
+      var $el = $(el);
+      $el.find('.userName').on('click',function(){
+        var username = $(this).attr('data-username');
+        console.log(username+"added to my friends! D:");
+        app.myFriends[username]=!app.myFriends[username];
+      });
 
-      app.chatMessages[i].directionClass = directionClass;
-      app.chatMessages[i].directionClassB = directionClassB;
-      $('#chats').prepend(app.messageTemplate(app.chatMessages[i]));
+      $('#chats').prepend($el);
     }
   }
   for(var key in app.chatRooms){

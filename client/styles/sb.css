@@ -348,3 +348,8 @@ table.dataTable thead .sorting:after {
 .logoicon {
   color: forestgreen;
 }
+
+.userName:hover{
+    color:blue;
+    cursor:pointer;
+}

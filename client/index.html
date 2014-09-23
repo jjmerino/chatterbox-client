@@ -79,7 +79,10 @@
   <li class="left clearfix">
     <div class="chat-body clearfix">
       <div class="header">
-        <strong class="primary-font"><%=username%></strong>
+        <strong class="userName primary-font" data-username="<%=username%>"><%=username%></strong>
+        <%if (isFriend) {%>
+          <i class="fa fa-heart" style='color:red'></i>
+        <% } %>
         <small class="pull-right text-muted">
           <i class="fa fa-clock-o fa-fw"></i><%=ago%>
         </small>
@@ -91,7 +94,7 @@
   </li>
 </script>
 <script id="roomItem" type="text/template">
-  <li class="message">
+  <li class="room">
     <a href="#" class="roomName <%=className%>" data-roomname="<%=name%>">
       <%=name%>
     </a>
