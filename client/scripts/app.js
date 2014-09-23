@@ -13,14 +13,19 @@ app.init = function(){
   //load templates
   app.roomTemplate = _.template($('#roomItem').html());
   app.messageTemplate = _.template($('#messageTemplate').html());
-  app.update()
+  app.update();
   setInterval(app.update, 1000);
 
   $('.username').on('click', function(){ app.addFriend(); })
   $('#messageForm').on('submit', function(e){
     e.preventDefault();
     var text = $('#inputText').val();
-    var sendObj = {username:app.username, text:text, room:app.currentRoom};
+    if(text.length<1){
+      return;
+    }
+    $('#inputText').val('');
+
+    var sendObj = {username:app.username, text:text, roomname:app.currentRoom};
     app.send(sendObj);
   })
 };
@@ -132,18 +137,18 @@ app.addMessage = function(message){
 app.addRoom = function(roomName){
   var el = $('<div>');
   $('#roomSelect').append(el);
-}
+};
 
 app.addFriend = function(){
 
-}
+};
 
 app.update = function(){
 
   //fetch and draw messages & rooms
   app.fetch();
 
-}
+};
 
 $(document).ready(app.init);
 
